@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Елена Хорошева | Продукт-маркетолог B2B</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* ========== ПЕРЕКЛЮЧЕНИЕ ТЕМЫ ========== */
+        :root {
+            --bg: linear-gradient(135deg, #f5f7ff 0%, #eef2ff 100%);
+            --surface: #ffffffcc;
+            --surface-hover: #ffffff;
+            --text: #111111;
+            --text-secondary: #1e3a8a;
+            --text-muted: #3b82f6;
+            --border: #bfdbfe;
+            --button-bg: #2563eb;
+            --button-text: #ffffff;
+            --transition: all 0.3s ease;
+            --shadow: 0 8px 20px rgba(0,0,0,0.05);
+            --shadow-hover: 0 12px 30px rgba(37,99,235,0.15);
+        }
+
+        body.dark {
+            --bg: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            --surface: #1e293bcc;
+            --surface-hover: #334155;
+            --text: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #60a5fa;
+            --border: #334155;
+            --button-bg: #3b82f6;
+            --button-text: #ffffff;
+            --shadow: 0 8px 20px rgba(0,0,0,0.3);
+            --shadow-hover: 0 12px 30px rgba(59,130,246,0.2);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.4;
+            font-weight: 400;
+            transition: background 0.3s, color 0.3s;
+            min-height: 100vh;
+        }
+
+        /* ========== ФОНОВАЯ АНИМАЦИЯ ========== */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .animated-bg::before {
+            content: '';
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            top: -25%;
+            left: -25%;
+            background: radial-gradient(circle, rgba(37,99,235,0.08) 0px, transparent 60px);
+            background-size: 60px 60px;
+            animation: slowDrift 60s linear infinite;
+        }
+
+        @keyframes slowDrift {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(60px, 60px) rotate(360deg); }
+        }
+
+        body.dark .animated-bg::before {
+            background: radial-gradient(circle, rgba(59,130,246,0.12) 0px, transparent 60px);
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 40px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* ========== ПЕРЕКЛЮЧАТЕЛЬ ТЕМЫ ========== */
+        .theme-switch-wrapper {
+            display: flex;
+            justify-content: flex-end;
+            padding: 20px 0 0;
+        }
+
+        .theme-switch {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--surface);
+            backdrop-filter: blur(8px);
+            padding: 8px 16px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 14px;
+            border: 1px solid var(--border);
+            transition: var(--transition);
+            color: var(--text);
+            box-shadow: var(--shadow);
+        }
+
+        .theme-switch:hover {
+            background: var(--surface-hover);
+            transform: translateY(-2px);
+        }
+
+        /* ========== АНИМАЦИЯ ПРИ СКРОЛЛЕ ========== */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Header */
+        .header {
+            padding: 60px 0 50px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .name {
+            font-size: 56px;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--text) 0%, var(--button-bg) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .role {
+            font-size: 20px;
+            font-weight: 400;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        .description {
+            font-size: 18px;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin-bottom: 32px;
+        }
+
+        .telegram-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--button-bg);
+            color: var(--button-text);
+            padding: 10px 20px;
+            border-radius: 40px;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            transition: all 0.2s;
+            box-shadow: var(--shadow);
+        }
+
+        .telegram-link:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        /* Секции */
+        .section {
+            padding: 80px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section:last-child {
+            border-bottom: none;
+        }
+
+        .section-title {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 48px;
+            letter-spacing: -0.01em;
+            color: var(--text);
+        }
+
+        /* Карточка товара */
+        .hero-product {
+            background: var(--surface);
+            backdrop-filter: blur(8px);
+            border-radius: 24px;
+            padding: 48px;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .hero-product:hover {
+            background: var(--surface-hover);
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .hero-product h3 {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text);
+        }
+
+        .hero-product .brand {
+            font-size: 14px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .hero-product .platform {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+        }
+
+        .hero-link {
+            display: inline-block;
+            background: var(--button-bg);
+            color: var(--button-text);
+            padding: 12px 28px;
+            border-radius: 40px;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            transition: all 0.2s;
+            box-shadow: var(--shadow);
+        }
+
+        .hero-link:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        /* Сетка */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+        }
+
+        /* Специальный стиль для карточки UX-дизайна — она будет выделяться */
+        .ux-card {
+            background: linear-gradient(135deg, #2563eb10 0%, #7c3aed10 100%);
+            border: 1px solid #a78bfa;
+            grid-column: span 2; /* Шире на всю строку */
+        }
+
+        .info-card {
+            background: var(--surface);
+            backdrop-filter: blur(8px);
+            border-radius: 24px;
+            padding: 32px;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .info-card:hover {
+            background: var(--surface-hover);
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .info-photo {
+            width: 48px;
+            height: 48px;
+            border-radius: 16px;
+            object-fit: cover;
+            margin-bottom: 20px;
+        }
+
+        .info-card h3 {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text);
+        }
+
+        .info-card p {
+            color: var(--text-secondary);
+            font-size: 15px;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .info-link {
+            color: var(--button-bg);
+            text-decoration: none;
+            font-weight: 500;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 2px;
+        }
+
+        .info-link:hover {
+            border-bottom-color: var(--button-bg);
+        }
+
+        /* Брендированный контент */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .content-card {
+            background: var(--surface);
+            backdrop-filter: blur(8px);
+            border-radius: 24px;
+            padding: 28px;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .content-card:hover {
+            background: var(--surface-hover);
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .content-photo {
+            width: 48px;
+            height: 48px;
+            border-radius: 16px;
+            object-fit: cover;
+            margin-bottom: 16px;
+        }
+
+        .content-card h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+
+        .content-card a {
+            color: var(--button-bg);
+            text-decoration: none;
+            font-size: 13px;
+            word-break: break-all;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .content-card a:hover {
+            border-bottom-color: var(--button-bg);
+        }
+
+        /* Футер */
+        .footer {
+            padding: 60px 0 80px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .footer a {
+            color: var(--button-bg);
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 24px;
+            }
+            .header {
+                padding: 40px 0 30px;
+            }
+            .name {
+                font-size: 40px;
+            }
+            .section {
+                padding: 48px 0;
+            }
+            .grid-2 {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .hero-product {
+                padding: 32px;
+            }
+            .hero-product h3 {
+                font-size: 26px;
+            }
+            .ux-card {
+                grid-column: span 1;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="animated-bg"></div>
+
+<div class="container">
+    <!-- Переключатель темы -->
+    <div class="theme-switch-wrapper">
+        <div class="theme-switch" id="theme-switch">
+            <span>🌙</span>
+            <span>Тёмная тема</span>
+        </div>
+    </div>
+
+    <!-- Шапка -->
+    <div class="header fade-up">
+        <div class="name">Елена Хорошева</div>
+        <div class="role">Продукт-маркетолог</div>
+        <div class="description">
+            Вывод товаров на B2B-рынок «с нуля».<br>
+            Упаковка, контент, аналитика, UX-дизайн.
+        </div>
+        <a href="https://t.me/ekhorosheva" class="telegram-link" target="_blank">
+            📱 @ekhorosheva
+        </a>
+    </div>
+
+    <!-- Выведенный ассортимент -->
+    <div class="section fade-up">
+        <div class="section-title">Выведенный ассортимент</div>
+        <div class="hero-product">
+            <div class="brand">Oasis · Making Everywhere</div>
+            <h3>Бытовая и климатическая техника</h3>
+            <div class="platform">Ozon · Полный цикл вывода с нуля</div>
+            <a href="https://www.ozon.ru/seller/forte-holding/bytovaya-tehnika-10500/making-oasis-everywhere-85936284/?miniapp=seller_564392" class="hero-link" target="_blank">
+                Смотреть на Ozon →
+            </a>
+        </div>
+    </div>
+
+    <!-- Аналитика и механики + UX-дизайн -->
+    <div class="section fade-up">
+        <div class="section-title">Аналитика, механики и дизайн</div>
+        <div class="grid-2">
+            <div class="info-card">
+                <img src="https://i.ibb.co/qM0cM8Tg/image.jpg" alt="analytics" class="info-photo">
+                <h3>Аналитические отчёты</h3>
+                <p>Глубокий анализ категорий, конкурентов и ценообразования.</p>
+                <div>
+                    <a href="https://docs.google.com/spreadsheets/d/1b-wm_k9ozWIKTqRWS6BUzr4BQQhfKzVCh1pvXO1q5CE/edit?usp=sharing" class="info-link" target="_blank">Шлифовальные машинки →</a><br><br>
+                    <a href="https://docs.google.com/spreadsheets/d/1NQgu1ecMhGFmzliFuXYOoPOi0SnnYX6PSMdxP0z9MGI/edit?usp=sharing" class="info-link" target="_blank">Роботы-мойщики окон →</a>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <img src="https://i.ibb.co/jZVwYfwt/image.jpg" alt="promo" class="info-photo">
+                <h3>Успешные акции</h3>
+                <p>Архив промо-механик, которые увеличили продажи.</p>
+                <a href="https://docs.google.com/spreadsheets/d/1Pp850F7qh_2nlt3qk_l6LOg8VtTKjDCjjmNl0walxG8/edit?usp=sharing" class="info-link" target="_blank">Смотреть кейсы →</a>
+            </div>
+
+            <div class="info-card">
+                <img src="https://i.ibb.co/Gv2JwPcS/image.jpg" alt="loyalty" class="info-photo">
+                <h3>Программа лояльности</h3>
+                <p>Разработка с нуля: баллы, призы, рост LTV.</p>
+                <a href="https://disk.yandex.ru/i/7FXZ-A6Fd7k66w" class="info-link" target="_blank">Открыть программу →</a>
+            </div>
+
+            <!-- НОВАЯ ПЛАШКА: UX-ДИЗАЙН ДЛЯ ЙОГА-СТУДИИ -->
+            <div class="info-card ux-card">
+                <div class="info-icon" style="font-size: 36px; margin-bottom: 20px;">🧘‍♀️</div>
+                <h3>UX-дизайн для йога-студии</h3>
+                <p>Разработка интерфейса и пользовательского опыта для YO-studio. Проектирование сценарных потоков, прототипирование, создание удобной и эстетичной цифровой среды.</p>
+                <a href="https://www.figma.com/file/ptaDIEke6DYkBNRKRsCMMN/YO-studio?node-id=0%3A1" class="info-link" target="_blank">Открыть макет в Figma →</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Брендированный контент -->
+    <div class="section fade-up">
+        <div class="section-title">Брендированный контент</div>
+        <div class="content-grid">
+            <div class="content-card">
+                <img src="https://i.ibb.co/qM0cM8Tg/image.jpg" alt="packaging" class="content-photo">
+                <h3>Дизайн упаковки</h3>
+                <a href="https://disk.yandex.ru/d/hi40_wRtKUr4bg" target="_blank">disk.yandex.ru/d/hi40_wRtKUr4bg</a>
+            </div>
+            <div class="content-card">
+                <img src="https://i.ibb.co/B5WLLPM4/image.jpg" alt="announce" class="content-photo">
+                <h3>Анонсы продуктов</h3>
+                <a href="https://disk.yandex.ru/d/Ht7WaQJOqqVf9w" target="_blank">disk.yandex.ru/d/Ht7WaQJOqqVf9w</a>
+            </div>
+            <div class="content-card">
+                <img src="https://i.ibb.co/hxKG1Kyz/image.jpg" alt="recipes" class="content-photo">
+                <h3>Книги рецептов</h3>
+                <a href="https://disk.yandex.ru/d/dt6Pi7dMWhF78w" target="_blank">disk.yandex.ru/d/dt6Pi7dMWhF78w</a>
+                <div style="font-size: 12px; color: var(--text-muted); margin-top: 6px;">Для мультиварок и су-вид</div>
+            </div>
+            <div class="content-card">
+                <img src="https://i.ibb.co/SDMLv9pW/image.jpg" alt="outdoor" class="content-photo">
+                <h3>Наружная реклама</h3>
+                <a href="https://disk.yandex.ru/d/BHTKx6oOfGZNOQ" target="_blank">disk.yandex.ru/d/BHTKx6oOfGZNOQ</a>
+            </div>
+            <div class="content-card">
+                <img src="https://i.ibb.co/LzQJTsXn/email.jpg" alt="email" class="content-photo">
+                <h3>Email-рассылка</h3>
+                <a href="https://disk.yandex.ru/i/oV6cEXS2AYBAhg" target="_blank">disk.yandex.ru/i/oV6cEXS2AYBAhg</a>
+            </div>
+            <div class="content-card">
+                <img src="https://i.ibb.co/jZVwYfwt/image.jpg" alt="calendar" class="content-photo">
+                <h3>Календари</h3>
+                <a href="https://disk.yandex.ru/i/JRTVgLVIXhkfLg" target="_blank">disk.yandex.ru/i/JRTVgLVIXhkfLg</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Футер -->
+    <div class="footer fade-up">
+        <p>Елена Хорошева — Продукт-маркетолог, UX-дизайнер</p>
+        <p style="margin-top: 8px;">📬 <a href="https://t.me/ekhorosheva">@ekhorosheva</a></p>
+    </div>
+</div>
+
+<script>
+    // Плавное появление при скролле
+    const fadeElements = document.querySelectorAll('.fade-up');
+    
+    function checkFade() {
+        fadeElements.forEach(el => {
+            const rect = el.getBoundingClientRect();
+            const windowHeight = window.innerHeight;
+            if (rect.top < windowHeight - 100) {
+                el.classList.add('visible');
+            }
+        });
+    }
+    
+    window.addEventListener('scroll', checkFade);
+    window.addEventListener('load', checkFade);
+    
+    // Переключение темы
+    const themeSwitch = document.getElementById('theme-switch');
+    const body = document.body;
+    
+    if (localStorage.getItem('theme') === 'dark') {
+        body.classList.add('dark');
+        themeSwitch.innerHTML = '<span>☀️</span><span>Светлая тема</span>';
+    }
+    
+    themeSwitch.addEventListener('click', () => {
+        body.classList.toggle('dark');
+        if (body.classList.contains('dark')) {
+            localStorage.setItem('theme', 'dark');
+            themeSwitch.innerHTML = '<span>☀️</span><span>Светлая тема</span>';
+        } else {
+            localStorage.setItem('theme', 'light');
+            themeSwitch.innerHTML = '<span>🌙</span><span>Тёмная тема</span>';
+        }
+    });
+</script>
+
+</body>
+</html>
